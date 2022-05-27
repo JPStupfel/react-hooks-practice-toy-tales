@@ -1,11 +1,29 @@
-import React from "react";
+import React, {useState} from "react";
+import { v4 as uuidv4 } from 'uuid';
 
-function ToyForm() {
+
+function ToyForm({handleSubmit}) {
+
+  const [newToy, setNewToy] = useState({id: uuidv4(), name:'',image:'', likes:0})
+
+  function handleInput(event){
+    const updatedToy = {...newToy, [event.target.name]: [event.target.value]}
+    setNewToy(updatedToy)
+    
+  }
+  
   return (
     <div className="container">
-      <form className="add-toy-form">
+      <form
+      onSubmit={(event)=>{
+            event.preventDefault(); 
+            handleSubmit(newToy);
+          }
+          }
+      className="add-toy-form">
         <h3>Create a toy!</h3>
         <input
+          onChange={handleInput}
           type="text"
           name="name"
           placeholder="Enter a toy's name..."
@@ -13,6 +31,7 @@ function ToyForm() {
         />
         <br />
         <input
+          onChange={handleInput}
           type="text"
           name="image"
           placeholder="Enter a toy's image URL..."
